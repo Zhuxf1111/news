@@ -1,0 +1,16 @@
+#update time :1469609500746
+#Wed Jul 27 16:51:40 CST 2016
+base_config_google_play_verify=nr_gone
+base_config_update_later=nr_gone
+avatar_build=nr_gone
+base_config_flow=nr_gone
+base_config_app_recommend=visible
+base_config_update=visible
+base_config_send_gold=nr_gone
+base_config_ad=nr_gone
+channel_id=netease
+base_config_push_switch=visible
+patch_build_id=1469609500746
+base_config_read_channel_libso=nr_gone
+base_config_update_later_interval=30
+base_config_push=visible

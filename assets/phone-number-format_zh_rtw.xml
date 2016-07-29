@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <country>
+        <name><![CDATA[中國]]></name>
+        <isocode><![CDATA[CN]]></isocode>
+        <countrycode><![CDATA[86]]></countrycode>
+        <phoneregular><![CDATA[[1][3578]\d{9}]]></phoneregular>
+    </country>
+    <country>
+        <name><![CDATA[台灣]]></name>
+        <isocode><![CDATA[TW]]></isocode>
+        <countrycode><![CDATA[886]]></countrycode>
+        <phoneregular><![CDATA[(9|09)(\d{8})]]></phoneregular>
+    </country>
+    <country>
+        <name><![CDATA[香港]]></name>
+        <isocode><![CDATA[HK]]></isocode>
+        <countrycode><![CDATA[852]]></countrycode>
+        <phoneregular><![CDATA[(5|6|9)(\d{7})]]></phoneregular>
+    </country>
+    <country>
+        <name><![CDATA[澳門]]></name>
+        <isocode><![CDATA[MO]]></isocode>
+        <countrycode><![CDATA[853]]></countrycode>
+        <phoneregular><![CDATA[6(\d{7})]]></phoneregular>
+    </country>
+</config>
