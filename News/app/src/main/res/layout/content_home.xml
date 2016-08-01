@@ -11,26 +11,12 @@
 
     <include layout="@layout/layout_actionbar" />
 
-    <android.support.v4.widget.DrawerLayout
+
+    <include
+        layout="@layout/layout_drawerlayout_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp">
-
-        <include
-            layout="@layout/layout_drawerlayout_left"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="start" />
-
-        <include
-            layout="@layout/layout_drawerlayout_main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-
-
-
-    </android.support.v4.widget.DrawerLayout>
+        android:layout_marginTop="50dp" />
 
 
 </RelativeLayout>

@@ -5,40 +5,71 @@
     android:orientation="vertical">
 
     <HorizontalScrollView
+        android:id="@+id/home_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
 
-            <TextView
-                style="@style/ScrollBarTextView"
-                android:text="A" />
+            android:orientation="vertical">
 
-            <TextView
-                style="@style/ScrollBarTextView"
-                android:text="B" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="#52a0df"
+                android:orientation="horizontal">
 
-            <TextView
-                style="@style/ScrollBarTextView"
-                android:text="C" />
+                <TextView
+                    style="@style/ScrollBarTextView"
+                    android:text="A" />
 
-            <TextView
-                style="@style/ScrollBarTextView"
-                android:text="D" />
+                <TextView
+                    style="@style/ScrollBarTextView"
+                    android:text="B" />
 
-            <TextView
-                style="@style/ScrollBarTextView"
-                android:text="E" />
+                <TextView
+                    style="@style/ScrollBarTextView"
+                    android:text="C" />
 
-            <TextView
-                style="@style/ScrollBarTextView"
-                android:text="F" />
+                <TextView
+                    style="@style/ScrollBarTextView"
+                    android:text="D" />
+
+                <TextView
+                    style="@style/ScrollBarTextView"
+                    android:text="E" />
+
+                <TextView
+                    style="@style/ScrollBarTextView"
+                    android:text="F" />
 
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/bottom_scroll_view"
+                    android:layout_width="80dp"
+                    android:layout_height="2dp"
+                    android:background="#207fcc" />
+            </LinearLayout>
         </LinearLayout>
     </HorizontalScrollView>
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/info_viewpager"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp">
+
+    </android.support.v4.view.ViewPager>
 
 </LinearLayout>
