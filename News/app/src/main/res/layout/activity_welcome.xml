@@ -20,7 +20,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="15dp"
         android:gravity="center"
-        android:text="AndroidNews"
+        android:text="NewsReport"
         android:textColor="@android:color/black"
         android:textSize="24sp"/>
 
