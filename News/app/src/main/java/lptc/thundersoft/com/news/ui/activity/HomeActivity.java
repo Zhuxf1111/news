@@ -1,5 +1,7 @@
 package lptc.thundersoft.com.news.ui.activity;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,6 +24,9 @@ import lptc.thundersoft.com.news.base.BaseActivity;
 import lptc.thundersoft.com.news.ui.fragment.TestFragment;
 
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
+
+    PopupWindow mPopuWindow;
+
     @Bind(R.id.bottom_scroll_view)
     View mView;
 
@@ -48,6 +54,15 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void init() {
+
+        mPopuWindow = new PopupWindow();
+        TextView test =new TextView(this);test.setText("PPPP");
+        mPopuWindow.setContentView(test);
+        mPopuWindow.setHeight(50);
+        mPopuWindow.setWidth(200);
+        mPopuWindow.setFocusable(true);
+        mPopuWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+
         for (int j = 0; j < ((LinearLayout) ((LinearLayout) mScrollView.getChildAt(0)).getChildAt(0)).getChildCount(); j++) {
             ((LinearLayout) ((LinearLayout) mScrollView.getChildAt(0)).getChildAt(0)).getChildAt(j).setOnClickListener(this);
         }
@@ -106,6 +121,16 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     void showLeft(View view) {
         mDrawerLayout.openDrawer(Gravity.LEFT);
 
+    }
+
+    @OnClick(R.id.bar_more)
+    void showPopuWindow(View view){
+        mPopuWindow.showAsDropDown(view ,-150,-80);
+    }
+
+    @OnClick(R.id.fab)
+    void showQuickMenu(View view){
+        mPopuWindow.showAsDropDown(view ,-150,-80);
     }
 
 
