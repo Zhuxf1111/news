@@ -20,7 +20,7 @@ import lptc.thundersoft.com.news.R;
 import lptc.thundersoft.com.news.base.BaseActivity;
 import lptc.thundersoft.com.news.ui.fragment.TestFragment;
 
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity implements View.OnClickListener {
     @Bind(R.id.bottom_scroll_view)
     View mView;
 
@@ -48,6 +48,10 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     protected void init() {
+        for (int j = 0; j < ((LinearLayout) ((LinearLayout) mScrollView.getChildAt(0)).getChildAt(0)).getChildCount(); j++) {
+            ((LinearLayout) ((LinearLayout) mScrollView.getChildAt(0)).getChildAt(0)).getChildAt(j).setOnClickListener(this);
+        }
+
 
         fragments = new ArrayList<Fragment>();
 
@@ -105,4 +109,29 @@ public class HomeActivity extends BaseActivity {
     }
 
 
+    @Override
+    public void onClick(View view) {
+        switch (((TextView) view).getText().toString()) {
+            case "A":
+                mViewPager.setCurrentItem(0);
+                break;
+            case "B":
+                mViewPager.setCurrentItem(1);
+                break;
+            case "C":
+                mViewPager.setCurrentItem(2);
+                break;
+            case "D":
+                mViewPager.setCurrentItem(3);
+                break;
+            case "E":
+                mViewPager.setCurrentItem(4);
+                break;
+            case "F":
+                mViewPager.setCurrentItem(5);
+                break;
+
+
+        }
+    }
 }
