@@ -1,15 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/background_faq"
+        android:fitsSystemWindows="true">
+
+        <lptc.thundersoft.com.news.widget.CircleImageView
+            android:id="@+id/view"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="15dp"
+            android:src="@drawable/ic_slide_menu_avatar_no_login"
+
+             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view"
+            android:layout_centerHorizontal="true"
+            android:text="立 即 登 录 "
+            android:textColor="@color/cardview_light_background"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="使用你的GitHub帐号登录"
+            android:textColor="@color/cardview_light_background"
+            android:textSize="15dp" />
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="left" />
+    </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:showDividers="middle"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:paddingLeft="15dp"
+                android:id="@+id/about"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:src="@drawable/google_code_copyrighted" />
+            <TextView
+                android:paddingLeft="30dp"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:textSize="23dp"
+                android:textColor="@color/cardview_dark_background"
+                android:text="Gank.io"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+
+            android:layout_height="50dp">
+            <ImageView
+                android:paddingLeft="15dp"
+                android:id="@+id/gank"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:src="@drawable/doc" />
+            <TextView
+                android:paddingLeft="30dp"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:textSize="23dp"
+                android:textColor="@color/cardview_dark_background"
+                android:text="Notes"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#aaaaaa"
+            />
+       <TextView
+           android:paddingLeft="15dp"
+           android:layout_marginTop="10dp"
+           android:text="About"
+           android:textSize="23dp"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <ImageView
+                android:paddingLeft="15dp"
+                android:id="@+id/about_me"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:src="@drawable/help" />
+            <TextView
+                android:paddingLeft="30dp"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:textSize="23dp"
+                android:textColor="@color/cardview_dark_background"
+                android:text="关于我"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <ImageView
+                android:paddingLeft="15dp"
+                android:id="@+id/news_android"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:src="@drawable/recurring_appointment_exception" />
+            <TextView
+                android:paddingLeft="30dp"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:textSize="23dp"
+                android:textColor="@color/cardview_dark_background"
+                android:text="Android_News"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp" />
+        </LinearLayout>
+
+
+
+
+
+
+    </LinearLayout>
 
 </LinearLayout>

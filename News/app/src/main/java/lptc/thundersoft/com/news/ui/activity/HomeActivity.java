@@ -1,9 +1,12 @@
 package lptc.thundersoft.com.news.ui.activity;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.HorizontalScrollView;
@@ -46,6 +49,8 @@ public class HomeActivity extends BaseActivity {
         return R.layout.layout_activity_home;
     }
 
+
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void init() {
 
@@ -73,6 +78,7 @@ public class HomeActivity extends BaseActivity {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
+
 
             @Override
             public void onPageSelected(int position) {
