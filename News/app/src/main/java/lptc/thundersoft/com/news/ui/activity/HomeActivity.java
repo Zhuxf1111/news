@@ -1,17 +1,17 @@
 package lptc.thundersoft.com.news.ui.activity;
 
-import android.annotation.TargetApi;
-import android.os.Build;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,7 +23,10 @@ import lptc.thundersoft.com.news.R;
 import lptc.thundersoft.com.news.base.BaseActivity;
 import lptc.thundersoft.com.news.ui.fragment.TestFragment;
 
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity implements View.OnClickListener {
+
+    PopupWindow mPopuWindow;
+
     @Bind(R.id.bottom_scroll_view)
     View mView;
 
@@ -49,10 +52,21 @@ public class HomeActivity extends BaseActivity {
         return R.layout.layout_activity_home;
     }
 
-
-    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void init() {
+
+        mPopuWindow = new PopupWindow();
+        TextView test =new TextView(this);test.setText("PPPP");
+        mPopuWindow.setContentView(test);
+        mPopuWindow.setHeight(50);
+        mPopuWindow.setWidth(200);
+        mPopuWindow.setFocusable(true);
+        mPopuWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+
+        for (int j = 0; j < ((LinearLayout) ((LinearLayout) mScrollView.getChildAt(0)).getChildAt(0)).getChildCount(); j++) {
+            ((LinearLayout) ((LinearLayout) mScrollView.getChildAt(0)).getChildAt(0)).getChildAt(j).setOnClickListener(this);
+        }
+
 
         fragments = new ArrayList<Fragment>();
 
@@ -78,7 +92,6 @@ public class HomeActivity extends BaseActivity {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
-
 
             @Override
             public void onPageSelected(int position) {
@@ -110,5 +123,40 @@ public class HomeActivity extends BaseActivity {
 
     }
 
+    @OnClick(R.id.bar_more)
+    void showPopuWindow(View view){
+        mPopuWindow.showAsDropDown(view ,-150,-80);
+    }
 
+    @OnClick(R.id.fab)
+    void showQuickMenu(View view){
+        mPopuWindow.showAsDropDown(view ,-150,-80);
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        switch (((TextView) view).getText().toString()) {
+            case "A":
+                mViewPager.setCurrentItem(0);
+                break;
+            case "B":
+                mViewPager.setCurrentItem(1);
+                break;
+            case "C":
+                mViewPager.setCurrentItem(2);
+                break;
+            case "D":
+                mViewPager.setCurrentItem(3);
+                break;
+            case "E":
+                mViewPager.setCurrentItem(4);
+                break;
+            case "F":
+                mViewPager.setCurrentItem(5);
+                break;
+
+
+        }
+    }
 }
