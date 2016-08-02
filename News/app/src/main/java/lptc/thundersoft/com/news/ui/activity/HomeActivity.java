@@ -1,6 +1,5 @@
 package lptc.thundersoft.com.news.ui.activity;
 
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -8,11 +7,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,21 +53,28 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         return R.layout.layout_activity_home;
     }
 
+
     @Override
     protected void init() {
+        View view = getLayoutInflater().inflate(R.layout.popuwindow_cardview,null);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(HomeActivity.this,"111",Toast.LENGTH_SHORT).show();
+            }
+        });
+        mPopuWindow = new PopupWindow(view, FrameLayout.LayoutParams.WRAP_CONTENT,FrameLayout.LayoutParams.WRAP_CONTENT);
+        //mPopuWindow.setContentView(view);
+//        mPopuWindow.setWidth(200);
+//        mPopuWindow.setHeight(50);
 
-        mPopuWindow = new PopupWindow();
-        TextView test =new TextView(this);test.setText("PPPP");
-        mPopuWindow.setContentView(test);
-        mPopuWindow.setHeight(50);
-        mPopuWindow.setWidth(200);
         mPopuWindow.setFocusable(true);
-        mPopuWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        mPopuWindow.setBackgroundDrawable(new ColorDrawable());
+
 
         for (int j = 0; j < ((LinearLayout) ((LinearLayout) mScrollView.getChildAt(0)).getChildAt(0)).getChildCount(); j++) {
             ((LinearLayout) ((LinearLayout) mScrollView.getChildAt(0)).getChildAt(0)).getChildAt(j).setOnClickListener(this);
         }
-
 
         fragments = new ArrayList<Fragment>();
 
@@ -100,13 +108,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 TextView textView = (TextView) mLinearLayout.getChildAt(position);
                 mView.layout((int) textView.getX(), (int) textView.getY(), (int) (textView.getX() + textView.getWidth()), (int) (textView.getY() + textView.getHeight()));
                 mScrollView.scrollTo(textView.getLeft(), textView.getTop());
-              /*  Log.i("HomeActivity","left:"+textView.getLeft());
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mView.getLayoutParams();
-                if(null==params){
-                    params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-                }
-                params.leftMargin= textView.getLeft();
-                mView.setLayoutParams(params);*/
             }
 
             @Override
@@ -130,7 +131,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     @OnClick(R.id.fab)
     void showQuickMenu(View view){
-        mPopuWindow.showAsDropDown(view ,-150,-80);
+        mPopuWindow.showAtLocation(mDrawerLayout,200,120,Gravity.CENTER);
+        //mPopuWindow.showAsDropDown(view ,-150,-80);
     }
 
 
