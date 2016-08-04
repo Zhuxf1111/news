@@ -1,14 +1,15 @@
 package lptc.thundersoft.com.news.base;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+
+import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import butterknife.ButterKnife;
 
 /**
  * Created by zxf on 16-7-29.
  */
-public abstract class BaseActivity extends FragmentActivity {
+public abstract class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +22,6 @@ public abstract class BaseActivity extends FragmentActivity {
     protected abstract int setLayout();
 
     protected abstract void init();
-
 
 
 }

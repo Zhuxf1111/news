@@ -94,7 +94,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             }
         });
 
-
+        mViewPager.setOffscreenPageLimit(6);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

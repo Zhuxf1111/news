@@ -2,8 +2,10 @@ package lptc.thundersoft.com.news.ui.fragment;
 
 import android.graphics.Color;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -14,11 +16,19 @@ import java.util.List;
 import butterknife.Bind;
 import lptc.thundersoft.com.news.R;
 import lptc.thundersoft.com.news.base.BaseFragment;
+import lptc.thundersoft.com.news.model.Gank;
+import lptc.thundersoft.com.news.network.RetrofitHelper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by zxf on 16-8-1.
  */
 public class TestFragment extends BaseFragment {
+
+
+    private static final String TAG = "TestFragment";
     @Bind(R.id.fragment_swiperefresh)
     SwipeRefreshLayout mSRLayout;
 
@@ -27,16 +37,25 @@ public class TestFragment extends BaseFragment {
 
     List<String> strs;
 
+
+    MyAdapter adapter;
+
     @Override
     protected void initView() {
 
         strs = new ArrayList<String>();
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 50; i++) {
             strs.add("item" + i);
         }
 
-        mRecyclerView.setAdapter(new MyAdapter());
+//        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
+        mRecyclerView.setHasFixedSize(true);
+        adapter = new MyAdapter();
+        mRecyclerView.setAdapter(adapter);
+
 
 //        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
 //            @Override
@@ -50,35 +69,85 @@ public class TestFragment extends BaseFragment {
 //                super.onScrolled(recyclerView, dx, dy);
 //            }
 //        });
-        mSRLayout.setColorSchemeColors( Color.BLUE);
+        mSRLayout.setColorSchemeColors(Color.BLUE);
 
-        mSRLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mSRLayout.setRefreshing(true);
-//                try {
-//                    Thread.sleep(10000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }finally {
-//                    mSRLayout.setRefreshing(false);
-//                }
-                mSRLayout.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSRLayout.setRefreshing(false);
-                    }
-                },5000);
 
-            }
-        },500);
         mSRLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mSRLayout.setRefreshing(true);
-                Log.i("xixixixxi","嘿嘿嘿");
+                getData();
+
+
             }
         });
+
+    }
+
+
+    public void getData() {
+        RetrofitHelper.getGankApi().getGankDatas("Android", 10, 1)
+                .enqueue(new Callback<Gank>() {
+                    @Override
+                    public void onResponse(Call<Gank> call, Response<Gank> response) {
+                        Log.i("zxf", response.toString());
+                        Gank gank = response.body();
+                        strs.clear();
+                        for (int i = 0; i < gank.results.size(); i++) {
+                            strs.add(gank.results.get(i).desc);
+                        }
+                        adapter.notifyDataSetChanged();
+                        mSRLayout.setRefreshing(false);
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Gank> call, Throwable t) {
+                        Log.i("zxf", "Failure---------------");
+
+                    }
+                });
+
+
+
+
+
+
+
+
+                /*.compose(this.<Gank>bindToLifecycle())
+                .filter(new Func1<Gank, Boolean>() {
+                    @Override
+                    public Boolean call(Gank gank) {
+                        Log.i(TAG,"call()-------------11111111111111111");
+                        return gank.error;
+                    }
+                }) .map(new Func1<Gank,List<Gank.GankInfo>>()
+        {
+
+            @Override
+            public List<Gank.GankInfo> call(Gank gank)
+            {
+                Log.i(TAG,"call()-------------2222222222222222222");
+                return gank.results;
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .retry()
+                .subscribe(new Action1<List<Gank.GankInfo>>()
+                {
+
+                    @Override
+                    public void call(List<Gank.GankInfo> gankInfos)
+                    {
+
+                        Log.i(TAG,"call()-------------333333333333333333333333");
+                        strs.clear();
+                        for (Gank.GankInfo gank : gankInfos){
+                            strs.add(gank.desc);
+                        }
+                        adapter.notifyDataSetChanged();
+                        mSRLayout.setRefreshing(false);*/
 
     }
 
@@ -91,21 +160,28 @@ public class TestFragment extends BaseFragment {
 
     class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            MyViewHolder holder = new MyViewHolder(new TextView(parent.getContext()));
+            Log.i("zxf", "onCreateViewHolder");
 
+            MyViewHolder holder = new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.test_layout, parent, false));
 
             return holder;
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            Log.i("zxf", "onBindViewHolder");
+            if (getItemCount() == 0)
+                return;
+
             ((MyViewHolder) holder).mTextView.setText(strs.get(position));
         }
 
         @Override
         public int getItemCount() {
+            Log.i("zxf", "getItemCount");
             return strs.size();
         }
 
@@ -115,7 +191,7 @@ public class TestFragment extends BaseFragment {
 
             public MyViewHolder(View itemView) {
                 super(itemView);
-                mTextView = (TextView) itemView;
+                mTextView = (TextView) itemView.findViewById(R.id.test_text);
             }
         }
     }

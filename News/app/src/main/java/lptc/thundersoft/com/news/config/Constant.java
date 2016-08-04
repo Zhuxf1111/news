@@ -9,4 +9,5 @@ package lptc.thundersoft.com.news.config;
  */
 public class Constant {
 
+
 }

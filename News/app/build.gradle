@@ -5,6 +5,7 @@ android {
     buildToolsVersion "23.0.0"
 
     defaultConfig {
+        multiDexEnabled true
         applicationId "lptc.thundersoft.com.news"
         minSdkVersion 16
         targetSdkVersion 23
@@ -17,21 +18,49 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/NOTICE' // will not include NOTICE file
+        exclude 'META-INF/LICENSE' // will not include LICENSE file
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
 }
 
 dependencies {
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-
+    //AndroidLib
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'com.android.support:cardview-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
-    compile 'com.jakewharton:butterknife:7.0.1'
+    //Retrofit2
+    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
+    //OkHttp3
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
     //RxJava and RxAndroid
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
+    //RxLifecycle 内存泄露
+    compile 'com.trello:rxlifecycle-components:0.6.1'
+
+
+    // 调试工具
+    compile 'com.facebook.stetho:stetho:1.3.1'
+    compile 'com.facebook.stetho:stetho-okhttp3:1.3.1'
+    //黄油刀
+    compile 'com.jakewharton:butterknife:7.0.1'
+
+    //jsoup网页解析
+    compile 'org.jsoup:jsoup:1.8.3'
+
+    //Realm数据
+    compile 'io.realm:realm-android:0.87.0'
 
 
 
