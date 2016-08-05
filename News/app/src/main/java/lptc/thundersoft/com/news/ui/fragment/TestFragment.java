@@ -37,7 +37,7 @@ public class TestFragment extends BaseFragment {
     @Bind(R.id.fragment_recyclerview)
     RecyclerView mRecyclerView;
 
-    List<String> strs;
+    List<Gank.GankInfo> gankInfos;
 
 
     MyAdapter adapter;
@@ -45,18 +45,11 @@ public class TestFragment extends BaseFragment {
     @Override
     protected void initView() {
 
-        strs = new ArrayList<String>();
-
-        for (int i = 0; i < 50; i++) {
-            strs.add("item" + i);
-        }
 
 //        mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        adapter = new MyAdapter();
-        mRecyclerView.setAdapter(adapter);
 
 
 //        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
@@ -79,13 +72,28 @@ public class TestFragment extends BaseFragment {
             public void onRefresh() {
                 getData();
 
-
             }
         });
+
+        Log.i("zxf", "getdata");
+
+
+        mSRLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mSRLayout.setRefreshing(true);
+                getData();
+            }
+        }, 1000);
 
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
+    }
 
     public void getData() {
         RetrofitHelper.getGankApi().getGankDatas("Android", 10, 1)
@@ -94,12 +102,22 @@ public class TestFragment extends BaseFragment {
                     public void onResponse(Call<Gank> call, Response<Gank> response) {
                         Log.i("zxf", response.toString());
                         Gank gank = response.body();
-                        strs.clear();
-                        for (int i = 0; i < gank.results.size(); i++) {
-                            strs.add(gank.results.get(i).url);
+                        if (gankInfos == null) {
+                            gankInfos = new ArrayList<Gank.GankInfo>();
+                        } else {
+                            gankInfos.clear();
                         }
+                        for (Gank.GankInfo infos : gank.results) {
+                            gankInfos.add(infos);
+                        }
+                        if (adapter == null) {
+                            adapter = new MyAdapter();
+                            mRecyclerView.setAdapter(adapter);
+                        }
+
                         adapter.notifyDataSetChanged();
                         mSRLayout.setRefreshing(false);
+                        Log.i("zxf", "sssssssssssssssssssssssssssssssssssssssssss");
 
                     }
 
@@ -145,9 +163,9 @@ public class TestFragment extends BaseFragment {
                     {
 
                         Log.i(TAG,"call()-------------333333333333333333333333");
-                        strs.clear();
+                        gankInfos.clear();
                         for (Gank.GankInfo gank : gankInfos){
-                            strs.add(gank.desc);
+                            gankInfos.add(gank.desc);
                         }
                         adapter.notifyDataSetChanged();
                         mSRLayout.setRefreshing(false);*/
@@ -178,12 +196,13 @@ public class TestFragment extends BaseFragment {
             Log.i("zxf", "onBindViewHolder");
             if (getItemCount() == 0)
                 return;
-            ((MyViewHolder) holder).mTextView.setText(strs.get(position));
+            ((MyViewHolder) holder).mTextView.setText(gankInfos.get(position).desc);
+            ((MyViewHolder) holder).mTextView.setTag(gankInfos.get(position).url);
             ((MyViewHolder) holder).mTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(TestFragment.this.getContext(), GankInfoActivity.class);
-                    intent.putExtra("url", ((TextView) view).getText().toString());
+                    intent.putExtra("url", view.getTag().toString());
                     startActivity(intent);
                 }
             });
@@ -193,7 +212,7 @@ public class TestFragment extends BaseFragment {
         @Override
         public int getItemCount() {
             Log.i("zxf", "getItemCount");
-            return strs.size();
+            return gankInfos.size();
         }
 
 

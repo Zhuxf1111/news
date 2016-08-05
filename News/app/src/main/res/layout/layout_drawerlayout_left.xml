@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
+    android:clickable="true"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -22,7 +23,7 @@
             android:layout_marginBottom="15dp"
             android:src="@drawable/ic_slide_menu_avatar_no_login"
 
-             />
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -49,108 +50,115 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:showDividers="middle"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:showDividers="middle">
+
         <LinearLayout
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal">
+
             <ImageView
-                android:paddingLeft="15dp"
                 android:id="@+id/about"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
+                android:paddingLeft="15dp"
                 android:src="@drawable/google_code_copyrighted" />
+
             <TextView
-                android:paddingLeft="30dp"
-                android:gravity="center"
-                android:layout_gravity="center_horizontal"
-                android:textSize="23dp"
-                android:textColor="@color/cardview_dark_background"
-                android:text="Gank.io"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp" />
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:paddingLeft="30dp"
+                android:text="Gank.io"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="23dp" />
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
+            android:layout_height="50dp"
 
-            android:layout_height="50dp">
+            android:orientation="horizontal">
+
             <ImageView
-                android:paddingLeft="15dp"
                 android:id="@+id/gank"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
+                android:paddingLeft="15dp"
                 android:src="@drawable/doc" />
+
             <TextView
-                android:paddingLeft="30dp"
-                android:gravity="center"
-                android:layout_gravity="center_horizontal"
-                android:textSize="23dp"
-                android:textColor="@color/cardview_dark_background"
-                android:text="Notes"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp" />
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:paddingLeft="30dp"
+                android:text="Notes"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="23dp" />
         </LinearLayout>
 
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="#aaaaaa"
-            />
-       <TextView
-           android:paddingLeft="15dp"
-           android:layout_marginTop="10dp"
-           android:text="About"
-           android:textSize="23dp"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content" />
-        <LinearLayout
-            android:orientation="horizontal"
+            android:background="#aaaaaa" />
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="15dp"
+            android:text="About"
+            android:textSize="23dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
             <ImageView
-                android:paddingLeft="15dp"
                 android:id="@+id/about_me"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:src="@drawable/help" />
-            <TextView
-                android:paddingLeft="30dp"
-                android:gravity="center"
-                android:layout_gravity="center_horizontal"
-                android:textSize="23dp"
-                android:textColor="@color/cardview_dark_background"
-                android:text="关于我"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-            <ImageView
                 android:paddingLeft="15dp"
+                android:src="@drawable/help" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:paddingLeft="30dp"
+                android:text="关于我"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="23dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <ImageView
                 android:id="@+id/news_android"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
+                android:paddingLeft="15dp"
                 android:src="@drawable/recurring_appointment_exception" />
+
             <TextView
-                android:paddingLeft="30dp"
-                android:gravity="center"
-                android:layout_gravity="center_horizontal"
-                android:textSize="23dp"
-                android:textColor="@color/cardview_dark_background"
-                android:text="Android_News"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp" />
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:paddingLeft="30dp"
+                android:text="Android_News"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="23dp" />
         </LinearLayout>
-
-
-
-
 
 
     </LinearLayout>
