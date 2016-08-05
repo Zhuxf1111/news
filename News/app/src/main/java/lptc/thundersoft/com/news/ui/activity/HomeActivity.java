@@ -56,17 +56,15 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void init() {
-        View view = getLayoutInflater().inflate(R.layout.popuwindow_cardview,null);
+        View view = getLayoutInflater().inflate(R.layout.popuwindow_cardview, null);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(HomeActivity.this,"111",Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, "111", Toast.LENGTH_SHORT).show();
             }
         });
-        mPopuWindow = new PopupWindow(view, FrameLayout.LayoutParams.WRAP_CONTENT,FrameLayout.LayoutParams.WRAP_CONTENT);
-        //mPopuWindow.setContentView(view);
-//        mPopuWindow.setWidth(200);
-//        mPopuWindow.setHeight(50);
+        mPopuWindow = new PopupWindow(view, FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+
 
         mPopuWindow.setFocusable(true);
         mPopuWindow.setBackgroundDrawable(new ColorDrawable());
@@ -125,14 +123,14 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     }
 
     @OnClick(R.id.bar_more)
-    void showPopuWindow(View view){
-        mPopuWindow.showAsDropDown(view ,-150,-80);
+    void showPopuWindow(View view) {
+        mPopuWindow.showAsDropDown(view, -150, -80);
     }
 
     @OnClick(R.id.fab)
-    void showQuickMenu(View view){
-        mPopuWindow.showAtLocation(mDrawerLayout,200,120,Gravity.CENTER);
-        //mPopuWindow.showAsDropDown(view ,-150,-80);
+    void showQuickMenu(View view) {
+        mPopuWindow.showAtLocation(mDrawerLayout, 200, 120, Gravity.CENTER);
+
     }
 
 

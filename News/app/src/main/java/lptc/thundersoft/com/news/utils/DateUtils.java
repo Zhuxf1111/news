@@ -8,11 +8,12 @@ import java.util.Date;
  * 常用时间工具类
  */
 public class DateUtils {
-    public static final String GankDateFormate = "yyyy-MM-ddThh:mm:ss";
+    public static final String GankDateFormate = "yyyy-MM-dd hh:mm:ss";
 
 
     public static String changeDateFormate(String srcString) {
-        String str = srcString.split(".")[0];
+        String[] str1 = srcString.split("\\.");
+        String str = str1[0].replace("T"," ");
         long timeMillion;
         try {
             Date srcDate = SimpleDateFormat.getDateInstance().parse(GankDateFormate);
@@ -36,7 +37,7 @@ public class DateUtils {
             }
             //显示日期
             else {
-                return str.split("T")[0].replaceAll("-", "\\\n");
+                return str.split("T")[0].replaceAll("-", " ");
             }
 
 

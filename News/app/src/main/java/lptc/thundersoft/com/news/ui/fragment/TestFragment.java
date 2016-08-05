@@ -20,6 +20,7 @@ import lptc.thundersoft.com.news.base.BaseFragment;
 import lptc.thundersoft.com.news.model.Gank;
 import lptc.thundersoft.com.news.network.RetrofitHelper;
 import lptc.thundersoft.com.news.ui.activity.GankInfoActivity;
+import lptc.thundersoft.com.news.utils.DateUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -197,7 +198,9 @@ public class TestFragment extends BaseFragment {
             if (getItemCount() == 0)
                 return;
             ((MyViewHolder) holder).mTextView.setText(gankInfos.get(position).desc);
+            ((MyViewHolder) holder).mTimeTextView.setText(DateUtils.changeDateFormate(gankInfos.get(position).publishedAt));
             ((MyViewHolder) holder).mTextView.setTag(gankInfos.get(position).url);
+            ((MyViewHolder) holder).mWhoTextView.setText(gankInfos.get(position).who);
             ((MyViewHolder) holder).mTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -218,10 +221,15 @@ public class TestFragment extends BaseFragment {
 
         class MyViewHolder extends RecyclerView.ViewHolder {
             TextView mTextView;
+            TextView mTimeTextView;
+            TextView mWhoTextView;
+
 
             public MyViewHolder(View itemView) {
                 super(itemView);
+                mTimeTextView = (TextView) itemView.findViewById(R.id.time_text);
                 mTextView = (TextView) itemView.findViewById(R.id.test_text);
+                mWhoTextView = (TextView) itemView.findViewById(R.id.who_text);
             }
         }
     }
