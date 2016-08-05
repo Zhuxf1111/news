@@ -10,7 +10,6 @@ import java.util.Date;
 public class DateUtils {
     public static final String GankDateFormate = "yyyy-MM-dd HH:mm:ss";
 
-
     public static String changeDateFormate(String srcString) {
         String[] str1 = srcString.split("\\.");
         String str = str1[0].replace("T"," ");
