@@ -1,5 +1,6 @@
 package lptc.thundersoft.com.news.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import lptc.thundersoft.com.news.R;
 import lptc.thundersoft.com.news.base.BaseFragment;
 import lptc.thundersoft.com.news.model.Gank;
 import lptc.thundersoft.com.news.network.RetrofitHelper;
+import lptc.thundersoft.com.news.ui.activity.GankInfoActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -81,6 +83,7 @@ public class TestFragment extends BaseFragment {
             }
         });
 
+
     }
 
 
@@ -93,7 +96,7 @@ public class TestFragment extends BaseFragment {
                         Gank gank = response.body();
                         strs.clear();
                         for (int i = 0; i < gank.results.size(); i++) {
-                            strs.add(gank.results.get(i).desc);
+                            strs.add(gank.results.get(i).url);
                         }
                         adapter.notifyDataSetChanged();
                         mSRLayout.setRefreshing(false);
@@ -175,8 +178,16 @@ public class TestFragment extends BaseFragment {
             Log.i("zxf", "onBindViewHolder");
             if (getItemCount() == 0)
                 return;
-
             ((MyViewHolder) holder).mTextView.setText(strs.get(position));
+            ((MyViewHolder) holder).mTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(TestFragment.this.getContext(), GankInfoActivity.class);
+                    intent.putExtra("url", ((TextView) view).getText().toString());
+                    startActivity(intent);
+                }
+            });
+
         }
 
         @Override
