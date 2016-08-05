@@ -182,7 +182,6 @@ public class TestFragment extends BaseFragment {
 
 
 
-
     class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
