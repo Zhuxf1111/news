@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
@@ -17,9 +18,36 @@ public class RetrofitHelper {
 
     public static final String BASE_GANK_URL = "http://gank.io/api/";
 
+    public static final String BASE_GITHUB_URL = "https://api.github.com/";
+
     private static OkHttpClient mClient;
-    static{
+
+    static {
         initClient();
+    }
+
+
+    /**
+     * 获取GitHub登录请求tokenAPI
+     */
+    public static GitHub getGitHub() {
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://github.com/login/oauth/").client(mClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        return retrofit.create(GitHub.class);
+    }
+    /**
+     * 获取GitHub登录请求tokenAPI
+     */
+    public static GitHub getGitHubToken() {
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_GITHUB_URL).client(mClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        return retrofit.create(GitHub.class);
     }
 
     /**
@@ -41,7 +69,7 @@ public class RetrofitHelper {
             synchronized (RetrofitHelper.class) {
                 if (mClient == null) {
                     //设置Http缓存
-           //         Cache cache = new Cache(new File(AndroidRankApp.getContext().getCacheDir(), "HttpCache"), 1024 * 1024 * 100);
+                    //         Cache cache = new Cache(new File(AndroidRankApp.getContext().getCacheDir(), "HttpCache"), 1024 * 1024 * 100);
 
                     mClient = new OkHttpClient.Builder()
                             //.cache(cache)

@@ -36,7 +36,7 @@ public class DateUtils {
             }
             //显示日期
             else {
-                return str.split("T")[0].replaceAll("-", " ");
+                return str.split(" ")[0].replaceAll("-", " ");
             }
 
 

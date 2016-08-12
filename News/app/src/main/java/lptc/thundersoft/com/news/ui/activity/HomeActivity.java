@@ -1,5 +1,6 @@
 package lptc.thundersoft.com.news.ui.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -22,6 +23,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import lptc.thundersoft.com.news.R;
 import lptc.thundersoft.com.news.base.BaseActivity;
+import lptc.thundersoft.com.news.config.Constant;
 import lptc.thundersoft.com.news.ui.fragment.TestFragment;
 
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
@@ -113,6 +115,14 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
             }
         });
+    }
+
+    @OnClick(R.id.view)
+    void goToLogin(View view){
+        Intent intent = new Intent();
+        intent.setClass(this,GitHubLoginWebActivity.class);
+        intent.putExtra("url", Constant.GitHub.LOGIN_URL);
+        startActivity(intent);
     }
 
 
