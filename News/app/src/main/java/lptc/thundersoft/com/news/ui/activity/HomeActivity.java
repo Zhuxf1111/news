@@ -2,6 +2,7 @@ package lptc.thundersoft.com.news.ui.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -79,8 +80,14 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         fragments = new ArrayList<Fragment>();
 
         for (int i = 0; i < 6; i++) {
-            fragments.add(new TestFragment());
+            Bundle bundle = new Bundle();
+            bundle.putInt("TypeIndex",i);
+            TestFragment fragment = new TestFragment();
+            fragment.setArguments(bundle);
+//            fragment.setUserVisibleHint(false);
+            fragments.add(fragment);
         }
+//        fragments.get(0).setUserVisibleHint(true);
 
         mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
@@ -147,22 +154,22 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (((TextView) view).getText().toString()) {
-            case "A":
+            case "ALL":
                 mViewPager.setCurrentItem(0);
                 break;
-            case "B":
+            case "Android":
                 mViewPager.setCurrentItem(1);
                 break;
-            case "C":
+            case "IOS":
                 mViewPager.setCurrentItem(2);
                 break;
-            case "D":
+            case "APP":
                 mViewPager.setCurrentItem(3);
                 break;
-            case "E":
+            case "前端":
                 mViewPager.setCurrentItem(4);
                 break;
-            case "F":
+            case "拓展资源":
                 mViewPager.setCurrentItem(5);
                 break;
 

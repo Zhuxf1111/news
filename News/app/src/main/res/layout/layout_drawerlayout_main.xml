@@ -24,27 +24,27 @@
 
                 <TextView
                     style="@style/ScrollBarTextView"
-                    android:text="A" />
+                    android:text="All" />
 
                 <TextView
                     style="@style/ScrollBarTextView"
-                    android:text="B" />
+                    android:text="Android" />
 
                 <TextView
                     style="@style/ScrollBarTextView"
-                    android:text="C" />
+                    android:text="IOS" />
 
                 <TextView
                     style="@style/ScrollBarTextView"
-                    android:text="D" />
+                    android:text="APP" />
 
                 <TextView
                     style="@style/ScrollBarTextView"
-                    android:text="E" />
+                    android:text="前端" />
 
                 <TextView
                     style="@style/ScrollBarTextView"
-                    android:text="F" />
+                    android:text="拓展资源" />
 
 
             </LinearLayout>

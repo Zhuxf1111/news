@@ -1,7 +1,9 @@
 package lptc.thundersoft.com.news.ui.fragment;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,15 @@ public class TestFragment extends BaseFragment {
 
 
     private static final String TAG = "TestFragment";
+
+    private static final int PAGE_NUM = 10;
+
+    private int mPage = 1;
+
+    private String[] types = new String[]{"all", "Android", "iOS", "App", "前端", "拓展资源"};
+
+    private String mTypeName;
+
     @Bind(R.id.fragment_swiperefresh)
     SwipeRefreshLayout mSRLayout;
 
@@ -40,52 +52,74 @@ public class TestFragment extends BaseFragment {
 
     List<Gank.GankInfo> gankInfos;
 
+    RecyclerView.LayoutManager mManager;
+
 
     MyAdapter adapter;
 
+    private boolean isVisibility = false;
+
+
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void initView() {
 
+        Log.i("zxf", "initView--------------");
 
-//        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
+        int index = getArguments().getInt("TypeIndex", -1);
+
+        if (-1 != index) {
+            mTypeName = types[index];
+        }
+
+        mManager = new LinearLayoutManager(getContext());
+
+
+        mRecyclerView.setLayoutManager(mManager);
         mRecyclerView.setHasFixedSize(true);
-
-
-//        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//
-//            }
-//
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//            }
-//        });
         mSRLayout.setColorSchemeColors(Color.BLUE);
-
 
         mSRLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                mPage = 1;
                 getData();
 
             }
         });
 
-        Log.i("zxf", "getdata");
 
+        if (isVisibility) {
+            mSRLayout.setRefreshing(true);
+            mSRLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getData();
+                }
+            }, 1000);
+        }
 
-        mSRLayout.postDelayed(new Runnable() {
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void run() {
-                mSRLayout.setRefreshing(true);
-                getData();
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
             }
-        }, 1000);
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+//                lastItemCount = mManager.
+                int visible = mManager.getChildCount();
+                int total = mManager.getItemCount();
+                int first = ((LinearLayoutManager) mManager).findFirstCompletelyVisibleItemPosition();
+                if (visible + first == total) {
+                    Toast.makeText(TestFragment.this.getContext(), "bottom", Toast.LENGTH_SHORT).show();
+
+                }
+
+
+            }
+        });
 
 
     }
@@ -93,11 +127,11 @@ public class TestFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getData();
+        //getData();
     }
 
     public void getData() {
-        RetrofitHelper.getGankApi().getGankDatas("Android", 10, 1)
+        RetrofitHelper.getGankApi().getGankDatas(mTypeName, PAGE_NUM, mPage)
                 .enqueue(new Callback<Gank>() {
                     @Override
                     public void onResponse(Call<Gank> call, Response<Gank> response) {
@@ -118,14 +152,12 @@ public class TestFragment extends BaseFragment {
 
                         adapter.notifyDataSetChanged();
                         mSRLayout.setRefreshing(false);
-                        Log.i("zxf", "sssssssssssssssssssssssssssssssssssssssssss");
 
                     }
 
                     @Override
                     public void onFailure(Call<Gank> call, Throwable t) {
-                        Log.i("zxf", "Failure---------------");
-
+                        Toast.makeText(TestFragment.this.getContext(), "Failure", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -175,11 +207,28 @@ public class TestFragment extends BaseFragment {
 
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        Log.i("zxf", "-----" + types[getArguments().getInt("TypeIndex")] + "------------isVisibleToUser:" + isVisibleToUser);
+        super.setUserVisibleHint(isVisibleToUser);
+        if (null != adapter && adapter.getItemCount() > 0) {
+            return;
+        }
+        isVisibility = isVisibleToUser;
+        if (null != mSRLayout && isVisibleToUser) {
+            mSRLayout.setRefreshing(true);
+            mSRLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getData();
+                }
+            }, 2000);
+        }
+    }
+
+    @Override
     protected int setLayout() {
         return R.layout.fragment_list_layout;
     }
-
-
 
 
     class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
