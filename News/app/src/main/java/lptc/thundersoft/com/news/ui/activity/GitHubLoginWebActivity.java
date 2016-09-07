@@ -15,6 +15,7 @@ import lptc.thundersoft.com.news.base.BaseActivity;
 import lptc.thundersoft.com.news.config.Constant;
 import lptc.thundersoft.com.news.model.GitHubUserInfo;
 import lptc.thundersoft.com.news.network.RetrofitHelper;
+import lptc.thundersoft.com.news.rx.RxBus;
 import lptc.thundersoft.com.news.widget.web.ViewWebGitHubLoginClient;
 import okhttp3.ResponseBody;
 import rx.Observable;
@@ -99,6 +100,7 @@ public class GitHubLoginWebActivity extends BaseActivity implements View.OnLongC
                             public void call(GitHubUserInfo gitHubUserInfo) {
                                 Toast.makeText(GitHubLoginWebActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
                                 GitHubLoginWebActivity.this.finish();
+                                RxBus.getInstance().post(gitHubUserInfo);
 
                             }
                         }, new Action1<Throwable>() {

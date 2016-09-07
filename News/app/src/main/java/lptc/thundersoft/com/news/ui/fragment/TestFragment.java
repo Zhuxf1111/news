@@ -11,16 +11,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import lptc.thundersoft.com.news.R;
+import lptc.thundersoft.com.news.adapter.DBHelper;
 import lptc.thundersoft.com.news.base.BaseFragment;
 import lptc.thundersoft.com.news.model.Gank;
+import lptc.thundersoft.com.news.model.GankInfo;
 import lptc.thundersoft.com.news.network.RetrofitHelper;
 import lptc.thundersoft.com.news.ui.activity.GankInfoActivity;
 import lptc.thundersoft.com.news.utils.DateUtils;
@@ -50,7 +55,7 @@ public class TestFragment extends BaseFragment {
     @Bind(R.id.fragment_recyclerview)
     RecyclerView mRecyclerView;
 
-    List<Gank.GankInfo> gankInfos;
+    List<GankInfo> gankInfos;
 
     RecyclerView.LayoutManager mManager;
 
@@ -63,6 +68,7 @@ public class TestFragment extends BaseFragment {
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void initView() {
+
 
         Log.i("zxf", "initView--------------");
 
@@ -83,7 +89,7 @@ public class TestFragment extends BaseFragment {
             @Override
             public void onRefresh() {
                 mPage = 1;
-                getData();
+                getData(false);
 
             }
         });
@@ -94,7 +100,7 @@ public class TestFragment extends BaseFragment {
             mSRLayout.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    getData();
+                    getData(false);
                 }
             }, 1000);
         }
@@ -113,8 +119,8 @@ public class TestFragment extends BaseFragment {
                 int total = mManager.getItemCount();
                 int first = ((LinearLayoutManager) mManager).findFirstCompletelyVisibleItemPosition();
                 if (visible + first == total) {
-                    Toast.makeText(TestFragment.this.getContext(), "bottom", Toast.LENGTH_SHORT).show();
-
+                    mPage++;
+                    getData(true);
                 }
 
 
@@ -130,19 +136,23 @@ public class TestFragment extends BaseFragment {
         //getData();
     }
 
-    public void getData() {
+    /**
+     * @param flag true: more data  false:refresh
+     */
+    public void getData(final boolean flag) {
         RetrofitHelper.getGankApi().getGankDatas(mTypeName, PAGE_NUM, mPage)
                 .enqueue(new Callback<Gank>() {
                     @Override
                     public void onResponse(Call<Gank> call, Response<Gank> response) {
                         Log.i("zxf", response.toString());
-                        Gank gank = response.body();
+                        final Gank gank = response.body();
                         if (gankInfos == null) {
-                            gankInfos = new ArrayList<Gank.GankInfo>();
+                            gankInfos = new ArrayList<GankInfo>();
                         } else {
-                            gankInfos.clear();
+                            if (!flag)
+                                gankInfos.clear();
                         }
-                        for (Gank.GankInfo infos : gank.results) {
+                        for (GankInfo infos : gank.results) {
                             gankInfos.add(infos);
                         }
                         if (adapter == null) {
@@ -153,13 +163,33 @@ public class TestFragment extends BaseFragment {
                         adapter.notifyDataSetChanged();
                         mSRLayout.setRefreshing(false);
 
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                DBHelper.getInstance(TestFragment.this.getContext()).toSaveGankInfos(gank.results);
+                            }
+                        }.run();
+
+
                     }
 
                     @Override
                     public void onFailure(Call<Gank> call, Throwable t) {
-                        Toast.makeText(TestFragment.this.getContext(), "Failure", Toast.LENGTH_SHORT).show();
+                        gankInfos = DBHelper.getInstance(TestFragment.this.getContext()).queryByType(mTypeName, PAGE_NUM, mPage);
+                        if (gankInfos != null && gankInfos.size()>0) {
+                            if (adapter == null) {
+                                adapter = new MyAdapter();
+                                mRecyclerView.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                            }
+                        } else {
+                            Toast.makeText(TestFragment.this.getContext(), "Failure", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
+
+    }
+
 
 
 
@@ -203,8 +233,6 @@ public class TestFragment extends BaseFragment {
                         adapter.notifyDataSetChanged();
                         mSRLayout.setRefreshing(false);*/
 
-    }
-
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -219,7 +247,7 @@ public class TestFragment extends BaseFragment {
             mSRLayout.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    getData();
+                    getData(false);
                 }
             }, 2000);
         }
@@ -236,7 +264,6 @@ public class TestFragment extends BaseFragment {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            Log.i("zxf", "onCreateViewHolder");
 
             MyViewHolder holder = new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.test_layout, parent, false));
 
@@ -245,27 +272,42 @@ public class TestFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            Log.i("zxf", "onBindViewHolder");
-            if (getItemCount() == 0)
-                return;
-            ((MyViewHolder) holder).mTextView.setText(gankInfos.get(position).desc);
-            ((MyViewHolder) holder).mTimeTextView.setText(DateUtils.changeDateFormate(gankInfos.get(position).publishedAt));
-            ((MyViewHolder) holder).mTextView.setTag(gankInfos.get(position).url);
-            ((MyViewHolder) holder).mWhoTextView.setText(gankInfos.get(position).who);
-            ((MyViewHolder) holder).mTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(TestFragment.this.getContext(), GankInfoActivity.class);
-                    intent.putExtra("url", view.getTag().toString());
-                    startActivity(intent);
-                }
-            });
+            if (gankInfos.get(position).type.equals("福利")) {
+                ((MyViewHolder) holder).mImageView.setVisibility(View.VISIBLE);
+                ((MyViewHolder) holder).mTextView.setVisibility(View.GONE);
+                ((MyViewHolder) holder).mTimeTextView.setVisibility(View.GONE);
+                ((MyViewHolder) holder).mTextView.setVisibility(View.GONE);
+                ((MyViewHolder) holder).mWhoTextView.setVisibility(View.GONE);
+                Glide.with(TestFragment.this.getActivity())
+                        .load(gankInfos.get(position).url)
+                        .placeholder(R.mipmap.ic_launcher)
+                        .centerCrop()
+                        .error(R.mipmap.ic_launcher)
+                        .into(((MyViewHolder) holder).mImageView);
+            } else {
+                ((MyViewHolder) holder).mImageView.setVisibility(View.GONE);
+                ((MyViewHolder) holder).mTextView.setVisibility(View.VISIBLE);
+                ((MyViewHolder) holder).mTimeTextView.setVisibility(View.VISIBLE);
+                ((MyViewHolder) holder).mTextView.setVisibility(View.VISIBLE);
+                ((MyViewHolder) holder).mWhoTextView.setVisibility(View.VISIBLE);
+                ((MyViewHolder) holder).mTextView.setText(gankInfos.get(position).desc);
+                ((MyViewHolder) holder).mTimeTextView.setText(DateUtils.changeDateFormate(gankInfos.get(position).publishedAt));
+                ((MyViewHolder) holder).mTextView.setTag(gankInfos.get(position).url);
+                ((MyViewHolder) holder).mWhoTextView.setText(gankInfos.get(position).who);
+                ((MyViewHolder) holder).mTextView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(TestFragment.this.getContext(), GankInfoActivity.class);
+                        intent.putExtra("url", view.getTag().toString());
+                        startActivity(intent);
+                    }
+                });
+            }
 
         }
 
         @Override
         public int getItemCount() {
-            Log.i("zxf", "getItemCount");
             return gankInfos.size();
         }
 
@@ -274,6 +316,7 @@ public class TestFragment extends BaseFragment {
             TextView mTextView;
             TextView mTimeTextView;
             TextView mWhoTextView;
+            ImageView mImageView;
 
 
             public MyViewHolder(View itemView) {
@@ -281,6 +324,7 @@ public class TestFragment extends BaseFragment {
                 mTimeTextView = (TextView) itemView.findViewById(R.id.time_text);
                 mTextView = (TextView) itemView.findViewById(R.id.test_text);
                 mWhoTextView = (TextView) itemView.findViewById(R.id.who_text);
+                mImageView = (ImageView) itemView.findViewById(R.id.imageview);
             }
         }
     }

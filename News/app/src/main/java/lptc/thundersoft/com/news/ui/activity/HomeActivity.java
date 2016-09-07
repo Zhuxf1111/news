@@ -7,15 +7,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,11 @@ import butterknife.OnClick;
 import lptc.thundersoft.com.news.R;
 import lptc.thundersoft.com.news.base.BaseActivity;
 import lptc.thundersoft.com.news.config.Constant;
+import lptc.thundersoft.com.news.model.GitHubUserInfo;
+import lptc.thundersoft.com.news.rx.RxBus;
 import lptc.thundersoft.com.news.ui.fragment.TestFragment;
+import lptc.thundersoft.com.news.widget.CircleImageView;
+import rx.functions.Action1;
 
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
@@ -34,14 +40,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     @Bind(R.id.bottom_scroll_view)
     View mView;
 
-    @Bind(R.id.bar_textview)
-    TextView mBarTextView;
-
     @Bind(R.id.home_drawerlayout)
     DrawerLayout mDrawerLayout;
-
-    @Bind(R.id.bar_more)
-    ImageView mMoreImageView;
 
     @Bind(R.id.home_scrollview)
     HorizontalScrollView mScrollView;
@@ -49,7 +49,17 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     @Bind(R.id.info_viewpager)
     ViewPager mViewPager;
 
+    @Bind(R.id.left_bottom_tv)
+    TextView mBottomTextView;
+
+    @Bind(R.id.left_name_tv)
+    TextView mNameTextView;
+
+    @Bind(R.id.view)
+    CircleImageView mCircleImageView;
+
     List<Fragment> fragments;
+
 
     @Override
     protected int setLayout() {
@@ -81,7 +91,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
         for (int i = 0; i < 6; i++) {
             Bundle bundle = new Bundle();
-            bundle.putInt("TypeIndex",i);
+            bundle.putInt("TypeIndex", i);
             TestFragment fragment = new TestFragment();
             fragment.setArguments(bundle);
 //            fragment.setUserVisibleHint(false);
@@ -122,12 +132,26 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
             }
         });
+
+        RxBus.getInstance().toObserverable(GitHubUserInfo.class)
+                .subscribe(new Action1<GitHubUserInfo>() {
+                    @Override
+                    public void call(GitHubUserInfo gitHubUserInfo) {
+                        Log.i("test","11111111111111111");
+                        mBottomTextView.setVisibility(View.GONE);
+                        mNameTextView.setText(gitHubUserInfo.name);
+                        Glide.with(HomeActivity.this)
+                                .load(gitHubUserInfo.avatarUrl)
+                                .into(mCircleImageView);
+                    }
+                });
+
     }
 
     @OnClick(R.id.view)
-    void goToLogin(View view){
+    void goToLogin(View view) {
         Intent intent = new Intent();
-        intent.setClass(this,GitHubLoginWebActivity.class);
+        intent.setClass(this, GitHubLoginWebActivity.class);
         intent.putExtra("url", Constant.GitHub.LOGIN_URL);
         startActivity(intent);
     }
