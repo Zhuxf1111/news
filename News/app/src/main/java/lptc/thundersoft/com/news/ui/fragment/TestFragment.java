@@ -183,7 +183,7 @@ public class TestFragment extends BaseFragment {
                                 adapter.notifyDataSetChanged();
                             }
                         } else {
-                            Toast.makeText(TestFragment.this.getContext(), "Failure", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TestFragment.this.getContext(), "No History Record", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
